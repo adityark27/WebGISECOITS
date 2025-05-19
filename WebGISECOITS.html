@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOITS: Optimalisasi Waste Management dan Resiliensi Iklim Kelurahan Tambak Wedi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary: #0D47A1; 
+            --secondary: #2196F3; 
+            --accent: #03A9F4; 
+            --light: #E3F2FD; 
+            --dark: #0A387E; 
+            --text: #333;
+            --text-light: #666;
+            --white: #fff;
+            --danger: #F44336;
+            --warning: #FFC107;
+            --success: #4CAF50;
+            --section-padding: 4rem 0;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            height: 100vh;
+            position: relative;
+            background-color: #000;
+            overflow: hidden;
+        }
+        
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.6) 100%);
+            z-index: 1;
+        }
+        
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center; 
+            gap: 25px;
+            color: var(--white);
+            z-index: 2;
+            width: 90%; 
+            max-width: 1050px;
+            padding: 20px;
+        }
+        
+        .header-logo-title {
+            max-width: 400px;
+            height: auto;
+            flex-shrink: 0; 
+        }
+
+        .header-text-wrapper {
+            text-align: left; 
+        }
+        
+        .header-content h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.7rem; 
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6); 
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .header-content p {
+            font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+            line-height: 1.5;
+            margin-bottom: 0; 
+            max-width: 100%; 
+            animation: fadeInUp 1s ease-out 0.3s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .nav-container {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            padding: 0.5rem 0; 
+            min-height: 55px; 
+        }
+        
+        .nav-left-group { 
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo { 
+            display: flex; 
+            align-items: center;
+            color: var(--white);
+            text-decoration: none;
+            margin-right: 20px; 
+        }
+        .nav-logo-img { 
+            height: 38px; 
+            width: auto;
+            margin-right: 8px; 
+        }
+        .nav-logo span { 
+            font-size: 1.65rem; 
+            font-weight: 700;
+            line-height: 1; 
+        }
+        
+        #mainNavLinks { 
+            display: flex;
+            align-items: center; 
+            list-style: none;
+            padding: 0; 
+            margin: 0; 
+        }
+        
+        #mainNavLinks > li:not(.mobile-social-icons) { 
+            display: flex; 
+            align-items: center;
+            height: 100%; 
+        }
+
+        .nav-link { 
+            margin: 0 0.4rem; 
+            padding: 6px 4px; 
+            color: var(--white);
+            position: relative;
+            font-weight: 500;
+            font-size: 0.9rem; 
+            line-height: 1.2; 
+            text-decoration: none;
+            display: flex; 
+            align-items: center; 
+            white-space: nowrap; 
+        }
+        .nav-link i.fa-chevron-down { 
+            font-size: 0.65em; 
+            margin-left: 5px;
+        }
+        
+        .nav-link:hover, .dropdown:hover .nav-link {
+            color: var(--accent);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px; 
+            bottom: 3px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent);
+            transition: var(--transition);
+            border-radius: 1px;
+        }
+        
+        .nav-link.active::after {
+            width: 60%;
+        }
+        
+        .desktop-social-icons-wrapper {
+            list-style: none; 
+            padding: 0;
+            margin: 0;
+            display: flex; 
+            align-items: center;
+        }
+        .desktop-social-icons-wrapper .nav-social-icons {
+            display: flex;
+            align-items: center;
+        }
+        .desktop-social-icons-wrapper .nav-social-icons a {
+            color: var(--white);
+            margin-left: 10px; 
+            font-size: 1.1rem; 
+            transition: var(--transition);
+            display: flex; 
+            align-items: center; 
+            padding: 5px; 
+        }
+        .desktop-social-icons-wrapper .nav-social-icons a:first-child { 
+             margin-left: 0;
+        }
+        .desktop-social-icons-wrapper .nav-social-icons a:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        #mainNavLinks .mobile-social-icons {
+            display: none; 
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block; 
+            height: 100%; 
+        }
+        
+        .dropdown-content {
+            display: none; 
+            position: absolute;
+            top: 100%; 
+            left: 0;   
+            background-color: var(--white);
+            min-width: 240px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(5px); 
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0); 
+        }
+        
+        .dropdown-content a {
+            color: var(--text);
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            display: block;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--light);
+        }
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--light); 
+            color: var(--primary);
+            padding-left: 20px;
+        }
+
+        .dropdown-content a.active {
+            background-color: var(--light); 
+            color: var(--primary);
+            font-weight: 600; 
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px; 
+        }
+        
+        .section {
+            padding: var(--section-padding);
+            scroll-margin-top: 70px; 
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--dark);
+            display: inline-block;
+            padding-bottom: 15px;
+            position: relative;
+            font-weight: 600;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 70px;
+            height: 4px;
+            background-color: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-top: -2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .flex-item {
+            flex: 1;
+            min-width: 320px;
+        }
+         .flex-item-50 {
+            flex-basis: calc(50% - 20px);
+        }
+        .flex-item-40 {
+             flex-basis: calc(40% - 20px);
+        }
+        .flex-item-60 {
+            flex-basis: calc(60% - 20px);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 500px; 
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border: 1px solid #ddd;
+        }
+        .gee-app-container {
+            width: 100%;
+            height: 650px; 
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border: 1px solid #ddd;
+        }
+        .gee-app-container iframe {
+            width:100%;
+            height:100%;
+            border:0;
+        }
+        
+        .text-content {
+            padding: 25px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+        
+        .text-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            color: var(--text-light);
+        }
+        .text-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            background-color: #000;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .dampak-sampah-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .dampak-sampah-gallery .image-item {
+            flex: 1;
+            min-width: 280px; 
+            max-width: 48%; 
+            text-align: center;
+        }
+        .dampak-sampah-gallery img {
+            width: 100%;
+            height: auto; 
+            max-height: 350px; 
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .caption-text {
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+            color: var(--text-light);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .typewriter-pemkot { 
+            font-size: 1.3rem; 
+            color: var(--dark);
+            font-weight: 600;
+            margin-top: 1rem; 
+            overflow: hidden;
+            border-right: .15em solid transparent;
+            white-space: nowrap;
+            margin-left: auto; 
+            margin-right: auto;
+            letter-spacing: .05em; 
+            animation: typing-pemkot 4s steps(36, end) infinite;
+            max-width: 100%; 
+            width: 0; 
+        }
+        
+        @keyframes typing-pemkot { 
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 600px; 
+            margin-bottom: 2rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        
+        .team-section-layout {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .team-intro {
+            flex: 1;
+            min-width: 250px;
+        }
+        .team-intro h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .team-members-container {
+            flex: 2;
+            min-width: 300px;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 20px 15px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid var(--light);
+        }
+        
+        .team-member h4 {
+            margin-bottom: 0.3rem;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+        
+        .team-member p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .solusi-panels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .solusi-panel {
+            background-color: var(--white); /* Panel tetap putih */
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solusi-panel-header {
+            display: flex;
+            align-items: flex-start; 
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .solusi-panel-title {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .solusi-panel-image {
+            width: 80px; 
+            height: 80px;
+            object-fit: contain; 
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+        
+        .solusi-panel-content-hidden {
+            text-align: justify;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+            opacity: 0;
+        }
+
+        .solusi-panel-content-hidden.expanded {
+            max-height: 1000px; 
+            opacity: 1;
+        }
+        .solusi-panel-content-hidden p {
+            margin-bottom: 0.8rem;
+        }
+
+        .solusi-selengkapnya-btn {
+            background-color: var(--secondary);
+            color: var(--white);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color var(--transition);
+            font-weight: 500;
+            margin-top: auto; 
+            align-self: flex-start; 
+        }
+
+        .solusi-selengkapnya-btn:hover {
+            background-color: var(--dark);
+        }
+        .solusi-selengkapnya-btn i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        .solusi-selengkapnya-btn.expanded i {
+            transform: rotate(180deg);
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: rgba(255,255,255,0.8);
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 220px;
+        }
+        .footer-column.logo-col {
+            flex-basis: 30%;
+             min-width: 280px;
+        }
+         .footer-column.contact-col, .footer-column.program-col {
+            flex-basis: 20%;
+        }
+
+        .footer-logo img {
+            max-width: 80px; 
+            height: auto; 
+            margin-bottom: 1rem;
+            background: var(--white); 
+            padding: 8px; 
+            border-radius: 8px;
+        }
+
+         .footer-logo-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+        .footer-description {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 35px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-link {
+            margin-bottom: 0.9rem;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        
+        .footer-link a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        .footer-link i {
+            margin-right: 8px;
+            color: var(--accent);
+            width: 20px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+        
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+        
+        .footer-social a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.9rem;
+        }
+        
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform; 
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+         /* Tambahan untuk spasi antar section jika dibutuhkan */
+        .sub-section-divider {
+            margin-top: 4rem; /* Atur jarak sesuai kebutuhan */
+            padding-top: 2rem; /* Atur padding atas jika perlu */
+            border-top: 1px solid #e0e0e0; /* Garis pemisah tipis jika diinginkan */
+        }
+
+        @media (max-width: 992px) {
+            #mainNavLinks { 
+                display: none; 
+                position: absolute;
+                top: 100%; 
+                left: 0;
+                width: 100%;
+                background-color: var(--dark);
+                flex-direction: column;
+                padding: 0.5rem 0; 
+                box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+                border-top: 1px solid var(--primary);
+            }
+            
+            #mainNavLinks.active { 
+                display: flex;
+            }
+            
+            #mainNavLinks > li:not(.mobile-social-icons) {
+                width: 100%; 
+            }
+            #mainNavLinks > li:not(.mobile-social-icons) .nav-link {
+                margin: 0; 
+                padding: 0.8rem 1.5rem; 
+                text-align: center;
+                border-bottom: 1px solid rgba(255,255,255,0.1); 
+                width: 100%; 
+                justify-content: center; 
+                font-size: 0.95rem; 
+                line-height: 1.5; 
+            }
+            #mainNavLinks > li:not(.mobile-social-icons) .nav-link i.fa-chevron-down {
+                 font-size: 0.7em; 
+            }
+
+            #mainNavLinks > li:not(.mobile-social-icons):last-of-type .nav-link { 
+                border-bottom: none;
+            }
+
+            .nav-link::after { 
+                display: none;
+            }
+            .nav-link:hover, .dropdown:hover .nav-link { 
+                color: var(--accent);
+                background-color: rgba(255,255,255,0.05);
+            }
+            
+            .desktop-social-icons-wrapper {
+                display: none; 
+            }
+            #mainNavLinks.active .mobile-social-icons {
+                display: flex; 
+                flex-direction: row; 
+                justify-content: center; 
+                align-items: center;
+                padding: 12px 0; 
+                margin-left: 0; 
+                margin-top: 8px; 
+                border-top: 1px solid rgba(255,255,255,0.1);
+                width: 100%; 
+            }
+            #mainNavLinks.active .mobile-social-icons a {
+                color: var(--white);
+                margin: 0 12px; 
+                font-size: 1.3rem; 
+                transition: var(--transition);
+            }
+             #mainNavLinks.active .mobile-social-icons a:hover {
+                 color: var(--accent);
+                 transform: scale(1.1);
+            }
+            
+            .dropdown-content { 
+                position: static; 
+                background-color: rgba(0,0,0,0.15); 
+                box-shadow: none;
+                display: none; 
+                margin-top: 0;
+                border-radius: 0;
+                padding-left: 20px; 
+                opacity: 1; 
+                transform: none; 
+            }
+            .dropdown.active .dropdown-content { 
+                display: block;
+            }
+
+            .dropdown-content a { 
+                color: var(--white); 
+                padding: 10px 15px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                font-size: 0.9rem;
+            }
+            .dropdown-content a:last-child {
+                 border-bottom: none;
+            }
+            .dropdown-content a:hover { 
+                 background-color: rgba(255,255,255,0.1);
+                 padding-left: 15px; 
+            }
+            .dropdown-content a.active { 
+                 background-color: rgba(255,255,255,0.15);
+                 font-weight: bold;
+            }
+            
+            .mobile-nav-toggle { 
+                display: block;
+            }
+
+            .flex-item-50, .flex-item-40, .flex-item-60 {
+                flex-basis: 100%;
+            }
+            .team-section-layout {
+                flex-direction: column;
+            }
+             .solusi-panels-container {
+                grid-template-columns: 1fr; 
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column; 
+                text-align: center; 
+                gap: 15px; 
+                width: 95%; 
+            }
+            .header-logo-title {
+                max-width: 240px; 
+                margin-bottom: 30px; 
+            }
+            .header-text-wrapper {
+                text-align: center; 
+            }
+            .header-content h1 {
+                font-size: clamp(1.6rem, 5.5vw, 2.2rem); 
+                line-height: 1.3;
+            }
+            .header-content p {
+                font-size: clamp(0.8rem, 3.3vw, 0.95rem); 
+                line-height: 1.5;
+            }
+            
+            .flex-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .flex-item {
+                width: 100%;
+            }
+
+            .section {
+                 padding: 3rem 0;
+            }
+             .section-title h2 {
+                font-size: clamp(1.8rem, 5vw, 2.2rem);
+            }
+            .map-container, .gee-app-container {
+                height: 450px; 
+            }
+            .section#prediksi-genangan .gee-app-container { 
+                 height: 500px;
+            }
+             .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-column {
+                margin-bottom: 2rem;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .chart-container {
+                height: 450px; 
+            }
+            .dampak-sampah-gallery {
+                flex-direction: column; 
+            }
+            .dampak-sampah-gallery .image-item {
+                max-width: 100%; 
+            }
+             .solusi-panel-header {
+                flex-direction: column; 
+                align-items: center;
+                text-align: center;
+            }
+            .solusi-panel-image {
+                margin-top: 10px; 
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="header" id="home">
+        <video class="video-background" autoplay muted loop playsinline poster="placeholder-image.jpg">
+            <source src="Background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <img src="LogoHadeh.png" alt="ECOITS Project Logo" class="header-logo-title">
+            <div class="header-text-wrapper">
+                <h1>ECOITS: Optimalisasi <em>Waste Management</em> dan Resiliensi Iklim</h1>
+                <p>Kelurahan Tambak Wedi dengan Pendekatan Geodetik Guna Mewujudkan Pemukiman yang Berkelanjutan</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-container">
+        <nav class="navbar container">
+            <div class="nav-left-group">
+                <a href="#home" class="nav-logo">
+                    <span>ECOITS</span>
+                </a>
+                <ul id="mainNavLinks">
+                    <li><a href="#tentang-tambak-wedi" class="nav-link">Tentang Tambak Wedi</a></li>
+                    <li><a href="#permasalahan" class="nav-link">Permasalahan</a></li>
+                    <li><a href="#dampak-sampah" class="nav-link">Dampak Sampah</a></li>
+                    <li><a href="#ecoits-section" class="nav-link">ECOITS</a></li>
+                    <li><a href="#sdgs-perubahan-iklim" class="nav-link">SDGs & Perubahan Iklim</a></li>
+                    <li class="dropdown">
+                        <a href="#metode-ahp" class="nav-link">Metode AHP <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#kelerengan">Kelerengan</a>
+                            <a href="#los-displacement">LOS Displacement</a>
+                            <a href="#kerentanan-banjir">Kerentanan Banjir</a>
+                            <a href="#tutupan-lahan">Tutupan Lahan</a>
+                            <a href="#peta-ahp-sub">Peta AHP</a>
+                            <a href="#lokasi-rekomendasi-tps">Lokasi Rekomendasi TPS</a>
+                        </div>
+                    </li>
+                    <li><a href="#prediksi-genangan" class="nav-link">Prediksi & Solusi</a></li>
+                    <li><a href="#team" class="nav-link">Tim ECOITS</a></li>
+                    <li class="nav-social-icons mobile-social-icons">
+                        <a href="https://www.instagram.com/ecoit5" target="_blank" aria-label="Instagram ECOITS"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="TikTok ECOITS (Coming Soon)"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" target="_blank" aria-label="Twitter ECOITS (Coming Soon)"><i class="fab fa-twitter"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="desktop-social-icons-wrapper">
+                <li class="nav-social-icons">
+                    <a href="https://www.instagram.com/ecoit5" target="_blank" aria-label="Instagram ECOITS"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" aria-label="TikTok ECOITS (Coming Soon)"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter ECOITS (Coming Soon)"><i class="fab fa-twitter"></i></a>
+                </li>
+            </ul>
+
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+
+    <section class="section reveal-on-scroll" id="tentang-tambak-wedi">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tentang Tambak Wedi</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-60 reveal-on-scroll">
+                    <div class="map-container">
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/administrasi-interaktif" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-40 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Gambaran Umum</h3>
+                        <p>Kelurahan Tambak Wedi merupakan kawasan pesisir yang terletak di Kecamatan Kenjeran, Kota Surabaya. Letaknya strategis di sisi timur kota, tak jauh dari pintu masuk Jembatan Suramadu. Wilayah ini menyuguhkan lanskap alami yang khas: pemandangan laut yang langsung menghadap ke Selat Madura. Siluet megah Suramadu tampak membingkai cakrawala, menciptakan panorama yang memesona saat matahari terbit maupun terbenam.</p>
+                        <p>Selain menyajikan keindahan maritim, kawasan ini juga memiliki ekosistem pesisir yang dinamis serta potensi wisata alam yang menarik untuk dikembangkan. Tambak Wedi dikenal sebagai kampung nelayan yang lekat dengan tradisi maritim, salah satunya pengolahan ikan asap secara tradisional yang menjadi ciri khas dan sumber penghidupan warga.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-container" style="margin-top: 3rem; align-items: center;">
+                <div class="flex-item flex-item-40 reveal-on-scroll">
+                    <div class="logo-container">
+                        <img src="City_of_Surabaya_Logo.svg.png" alt="Logo Pemkot Surabaya">
+                        <h3 class="typewriter-pemkot">Kelurahan Tambak Wedi</h3>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-60 reveal-on-scroll">
+                    <!-- MODIFIED VIDEO CONTAINER TO USE YOUTUBE EMBED -->
+                    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                            src="https://www.youtube.com/embed/3hRRjb_VpbY?si=S-rpaL9n9tuR8FfP" 
+                            title="Video Profil Kelurahan Tambak Wedi" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <p class="caption-text">Video Profil Kelurahan Tambak Wedi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="permasalahan" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Permasalahan Sampah di Tambak Wedi</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="chart-container">
+                        <canvas id="sampahChart"></canvas>
+                    </div>
+                     <p class="caption-text">Data Produksi Sampah 10 TPS di Surabaya Termasuk TPS 3R Tambak Wedi (Sumber: Olah Data 2024)</p>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Tantangan Pengelolaan Sampah</h3>
+                        <p>Permasalahan sampah menjadi salah satu tantangan utama di berbagai wilayah perkotaan, termasuk Surabaya. Histogram di samping menunjukkan volume sampah masuk dan sampah yang berhasil terkelola di 10 Tempat Pengolahan Sampah (TPS) terpilih, termasuk TPS 3R Tambak Wedi. Data ini memberikan gambaran mengenai kapasitas pengelolaan sampah di masing-masing TPS dan menyoroti TPS 3R Tambak Wedi secara khusus.</p>
+                        <p>Untuk TPS 3R Tambak Wedi sendiri, data menunjukkan volume sampah masuk dan tingkat pengelolaannya. Ini mencerminkan upaya yang telah dilakukan sekaligus tantangan yang masih dihadapi dalam mengurangi timbulan sampah dan meningkatkan efisiensi daur ulang atau pengolahan lebih lanjut.</p>
+                        <p>Secara umum, pengelolaan sampah di Tambak Wedi, seperti halnya di banyak area lain, masih menghadapi tantangan seperti keterbatasan fasilitas, optimalisasi proses 3R (Reduce, Reuse, Recycle), serta tingkat partisipasi masyarakat. Upaya peningkatan kesadaran dan penyediaan infrastruktur yang memadai menjadi kunci untuk mengatasi masalah ini secara berkelanjutan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="dampak-sampah">
+        <div class="container">
+            <div class="section-title">
+                <h2>Dampak Sampah Terhadap Perubahan Iklim</h2>
+            </div>
+            <div class="text-content reveal-on-scroll" style="margin-bottom: 2rem;">
+                <p>Permasalahan sampah di Kelurahan Tambak Wedi memberikan dampak signifikan terhadap lingkungan dan kehidupan masyarakat, baik secara lokal maupun global. Akumulasi sampah, terutama dari aliran Sungai Pegirian dan Kali Tebu, menyumbat sistem drainase yang seharusnya mengalirkan air hujan dan pasang laut. Akibatnya, genangan meluas hingga ke permukiman warga, terutama saat musim hujan atau pasang tinggi, menyebabkan kerusakan infrastruktur, terganggunya aktivitas harian, hingga peningkatan risiko penyakit akibat lingkungan yang tercemar.</p>
+            </div>
+            
+            <div class="dampak-sampah-gallery reveal-on-scroll">
+                <div class="image-item reveal-on-scroll">
+                    <img src="Gambar_Sampah.png" alt="Sampah menumpuk di pinggir sungai">
+                </div>
+                <div class="image-item reveal-on-scroll">
+                    <img src="SampahWedi1.png" alt="Sampah di sekitar Sungai Tambak Wedi">
+                </div>
+            </div>
+            <p class="caption-text reveal-on-scroll" style="margin-bottom: 2rem;">Sampah di Sekitar Sungai Tambak Wedi.</p>
+            
+            <div class="text-content reveal-on-scroll" style="margin-top: 2rem;">
+                <h3>Keterkaitan dengan Isu Global</h3>
+                <p>Sampah yang tidak terkelola dengan baik juga berkontribusi terhadap perubahan iklim. Sampah organik yang membusuk secara anaerob menghasilkan gas metana (CH₄), gas rumah kaca yang 25 kali lebih kuat dari CO₂ dalam memerangkap panas, dan pembakaran serta produksi sampah plastik menghasilkan emisi CO₂ yang besar. Kedua gas ini memperkuat efek rumah kaca dan berkontribusi pada pemanasan global serta perubahan iklim, termasuk kenaikan muka air laut dan risiko banjir rob di kawasan pesisir seperti Tambak Wedi.</p>
+                <p>Pencemaran laut oleh sampah plastik juga mengganggu fitoplankton, organisme laut yang penting dalam menyerap karbon melalui fotosintesis. Mikroplastik menghambat pertumbuhan fitoplankton dengan mengurangi cahaya matahari dan mengganggu fungsi biologisnya, sehingga menurunkan kapasitas laut dalam menyerap CO₂ dan mempercepat perubahan iklim.</p>
+                <p>Penumpukan sampah di kawasan padat penduduk meningkatkan fenomena urban heat island (UHI), yang menyebabkan suhu daerah perkotaan lebih tinggi dibandingkan sekitarnya. UHI juga menurunkan albedo permukaan, sehingga menyumbang pada peningkatan suhu mikroklimat kawasan pesisir.</p>
+                <p>Meskipun upaya mitigasi telah dilakukan melalui pembangunan Rumah Pompa dan TPS 3R, efektivitasnya masih terbatas akibat rendahnya kesadaran masyarakat, praktik buang sampah sembarangan, dan belum optimalnya manajemen data serta SDM dalam pengelolaan lingkungan. Tanpa intervensi yang lebih menyeluruh, permasalahan ini tidak hanya berdampak jangka pendek berupa genangan, tetapi juga memperbesar kerentanan Tambak Wedi terhadap bencana hidrometeorologi di masa mendatang.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="ecoits-section" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Program ECOITS</h2>
+            </div>    
+                 <p class="section-subtitle"><em>Environmental and Coastal Optimization for Integrated Trash and Sustainable City</em></p>
+            <div class="flex-container" style="align-items: center;">
+                <div class="flex-item flex-item-40 reveal-on-scroll">
+                    <div class="logo-container">
+                         <img src="Kompak5.JPEG" alt="Logo ECOITS Project" style="max-width: 450px; border-radius:1px; background: #fff; padding:10px;">
+                    </div>
+                </div>
+                <div class="flex-item flex-item-60 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Solusi Terpadu untuk Tambak Wedi</h3>
+                        <p>Sebagai solusi terhadap permasalahan banjir limpasan akibat sampah di Kelurahan Tambak Wedi, kami mengusulkan program ECOITS (<em>Environmental and Coastal Optimization for Integrated Trash and Sustainable City</em>), sebuah pendekatan terpadu yang menggabungkan teknologi geomatika dengan pemberdayaan masyarakat untuk menciptakan lingkungan pesisir yang tangguh dan berkelanjutan.</p>
+                        <p>Program ini mencakup pemetaan dan penentuan lokasi TPS berbasis kesesuaian lahan dengan teknologi Sistem Informasi Geografis (SIG), drone untuk pengambilan data spasial, serta pemodelan hidrodinamika untuk mengidentifikasi wilayah rawan banjir. Selain itu, ECOITS juga mengembangkan WebGIS interaktif sebagai sarana informasi dan edukasi mitigasi perubahan iklim bagi pemerintah dan masyarakat.</p>
+                        <p>Dengan integrasi teknologi dan pendekatan partisipatif, ECOITS diharapkan mampu mengurangi risiko banjir limpasan, meningkatkan kualitas lingkungan, dan menjadi model pengelolaan wilayah pesisir yang berkelanjutan di Indonesia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="sdgs-perubahan-iklim">
+        <div class="container">
+            <div class="section-title">
+                <h2>SDGs 9, 11, dan 13: Penanganan Perubahan Iklim Untuk Permukiman Dan Infrastruktur Yang Berkelanjutan</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-60 reveal-on-scroll"> 
+                    <div class="text-content">
+                        <p>Penelitian kami ini selaras dengan tujuan Pembangunan Berkelanjutan (SDGs) ke-9, 11, dan 13 dengan berfokus kepada pentingnya tindakan segera untuk mengatasi perubahan iklim dan dampaknya sebagai tantangan global yang memengaruhi seluruh aspek kehidupan untuk menciptakan kota yang berkelanjutan dan infrastruktur yang merata. Fokus kami, yaitu pada Goal 13 dalam Tujuan Pembangunan Berkelanjutan (TPB) atau yang dikenal dengan sebutan SDGs memiliki tujuan mengambil aksi segera untuk memerangi perubahan iklim dan dampaknya karena perubahan iklim adalah tantangan global yang memengaruhi setiap orang. SDGs dalam universitas berfokus pada mengeksplorasi penelitian universitas tentang perubahan iklim, penggunaan energi dan persiapan untuk menghadapi konsekuensi dari perubahan iklim. Tujuan Pembangunan Berkelanjutan 13 menyerukan tindakan untuk memerangi perubahan iklim dan dampaknya. Pada SDGS 13: 13.1.2* menjelaskan dalam upaya mengatasi perubahan iklim dan dampaknya, SDGs 13 menekankan pentingnya strategi nasional dalam penanggulangan bencana yang sejalan dengan Kerangka Kerja Sendai 2015-2030.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-40 reveal-on-scroll"> 
+                    <div class="image-container">
+                        <img src="SDGS.png" alt="SDGs Goals Illustration" style="max-height: 400px; object-fit: contain; margin: auto; display:block;">
+                         <p class="caption-text">Ilustrasi Tujuan Pembangunan Berkelanjutan (SDGs).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="metode-ahp" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Metode Analytic Hierarchy Process (AHP)</h2>
+            </div>
+            <div class="flex-container" style="align-items: center;">
+                 <div class="flex-item flex-item-60 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Dasar Pengambilan Keputusan</h3>
+                        <p>AHP (Analytic Hierarchy Process) merupakan sebuah metode yang dikembangkan pada akhir tahun 1970 oleh Saaty. Analitycal Hierarchy Process (AHP) adalah metode untuk memecahkan suatu situasi yang kompleks tidak terstruktur kedalam beberapa komponen dalam susunan yang hirarki, dengan memberi nilai subjektif tentang pentingnya setiap variabel secara relatif, dan menetapkan variabel mana yang memiliki prioritas paling tinggi guna memengaruhi hasil pada situasi tersebut (Saaty, T., 1993).</p>
+                        <p>Metode AHP sudah banyak diaplikasikan dalam bidang pendidikan, teknik, pemerintahan, industri, manajemen, manufaktur, olahraga dan lain-lain (Saaty, 1980). AHP merupakan tools pengambilan keputusan untuk menangani evaluasi multi-kriteria yang dapat dikombinasikan dengan analisis spasial SIG secara terintegrasi untuk pemilihan kriteria lokasi yang sesuai (Chaudhary, 2016).</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-40 reveal-on-scroll">
+                    <div class="image-container">
+                        <img src="AHP_ILUSTRASI.png" alt="Diagram Analytic Hierarchy Process">
+                        <p class="caption-text">Ilustrasi proses AHP.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section reveal-on-scroll" id="kelerengan">
+        <div class="container">
+            <div class="section-title">
+                <h2>Analisis Kelerengan</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta Kelerengan Tambak Wedi</h3>
+                        <p>Berdasarkan Peta Kelerengan Kelurahan Tambak Wedi, wilayah ini didominasi oleh kemiringan sangat landai dengan kelas kelerengan >00–02%, yang ditunjukkan oleh warna hijau muda dan mencerminkan topografi datar serta kerentanan terhadap genangan air dan banjir rob. Kelas kelerengan lainnya seperti >02-08% dan >08–15% tersebar di area tengah hingga barat, menunjukkan lahan yang masih dapat dimanfaatkan dengan perencanaan drainase yang baik. Sementara kelas >15–25% dan >25-45% hanya terdapat di beberapa titik seperti tanggul atau struktur lahan buatan di pesisir timur laut. Secara umum, wilayah Tambak Wedi didominasi oleh topografi datar hingga landai, menjadikannya kawasan yang rentan terhadap banjir limpasan dan banjir rob, serta membutuhkan sistem pengelolaan air dan sampah yang optimal untuk mencegah bencana hidrometeorologi.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-kelerengan-ecoits" allowfullscreen></iframe>
+                    </div>
+                    <p class="caption-text">Peta Kelerengan Interaktif Kelurahan Tambak Wedi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="los-displacement" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Analisis LOS Displacement</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta LOS Displacement</h3>
+                        <p>Berikut merupakan hasil analisis Line of Sight (LOS) Displacement di Kelurahan Tambak Wedi dalam rentang waktu 2018 hingga 2024. Berdasarkan peta yang ditampilkan, wilayah ini mengalami penurunan tanah (subsidence) dengan nilai perpindahan maksimum sebesar 0,46 meter dan minimum 0 meter. Warna pink hingga orange pada peta menggambarkan tingkat deformasi yang signifikan, menunjukkan bahwa bagian selatan dan tengah Tambak Wedi merupakan area yang paling rentan mengalami penurunan muka tanah. Analisis ini sangat penting karena menunjukkan potensi bahaya geoteknik dan risiko lingkungan yang dapat berdampak pada keberlanjutan infrastruktur dan permukiman di kawasan pesisir tersebut. Data ini menjadi dasar yang kuat untuk pengambilan keputusan dalam perencanaan tata ruang dan strategi adaptasi perubahan iklim berbasis geospasial.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-los-displacement-ecoits" allowfullscreen></iframe>
+                    </div>
+                     <p class="caption-text">Peta LOS Displacement Interaktif Kelurahan Tambak Wedi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="kerentanan-banjir">
+        <div class="container">
+            <div class="section-title">
+                <h2>Analisis Kerentanan Banjir</h2>
+            </div>
+            <div class="flex-container">
+                 <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta Tingkat Kerentanan Banjir</h3>
+                        <p>Peta Kerentanan Banjir Kelurahan Tambak Wedi membagi wilayah ke dalam empat kelas: Rendah, Sedang, Tinggi, dan Sangat Tinggi. Area dengan kerentanan rendah (Biru Muda) berada di utara, dekat zona tambak dan intertidal, kemungkinan karena elevasi lebih tinggi atau drainase yang baik. Tingkat sedang (hijau muda) mendominasi bagian utara-timur, yang masih berpotensi tergenang saat hujan lebat atau pasang laut. Kerentanan tinggi (kuning) tersebar di tengah hingga selatan, mencerminkan daerah padat dengan topografi datar dan sistem drainase terbatas. Kerentanan sangat tinggi (merah) terletak di selatan, khususnya di sekitar Jalan Tambak Wedi, yang rawan banjir akibat kombinasi limpasan hujan dan air rob. Wilayah ini memerlukan strategi mitigasi dan perbaikan tata kelola air secara menyeluruh.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-kerentanan-banjir" allowfullscreen></iframe>
+                    </div>
+                    <p class="caption-text">Peta Kerentanan Banjir Interaktif Kelurahan Tambak Wedi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="tutupan-lahan" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Analisis Tutupan Lahan</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta Jenis Tutupan Lahan</h3>
+                        <p>Peta tutupan lahan Kelurahan Tambak Wedi menunjukkan wilayah yang didominasi oleh permukiman (Biru Tua) di bagian tengah hingga selatan, menandakan kepadatan penduduk yang tinggi. Area tambak (Hijau keabu-abu an) di barat laut yang mencerminkan aktivitas budidaya perikanan. Badan air seperti sungai dan kolam (biru muda) tersebar di beberapa titik, berperan penting dalam sistem drainase. Vegetasi/Lahan kosong (hijau muda) hanya tampak sedikit dan tersebar tidak merata. Keberagaman ini menunjukkan pentingnya perencanaan tata ruang yang seimbang antara kawasan permukiman, pesisir, dan area produktif untuk keberlanjutan lingkungan dan mitigasi bencana.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-tutupan-lahan-ecoits" allowfullscreen></iframe>
+                    </div>
+                     <p class="caption-text">Peta Tutupan Lahan Interaktif Kelurahan Tambak Wedi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="peta-ahp-sub">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hasil Pembobotan AHP</h2>
+            </div>
+            <div class="flex-container">
+                 <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta Hasil Analisis AHP</h3>
+                        <p>Peta hasil analisis AHP (Analytical Hierarchy Process) di atas menunjukkan tingkat kesesuaian lokasi untuk Tempat Pembuangan Sementara (TPS) di Kelurahan Tambak Wedi yang diklasifikasikan ke dalam empat kategori: sangat sesuai, sesuai, kurang sesuai, dan tidak sesuai. Warna Biru Tua dan Biru Muda yang mendominasi wilayah utara dan timur menunjukkan area yang paling direkomendasikan untuk pembangunan TPS, sedangkan warna kuning dan merah di bagian selatan dan barat menandakan wilayah yang kurang layak. Terdapat empat parameter yang digunakan untuk analisis kesesuaian lokasi TPS yaitu tutupan lahan (65%), penurunan muka tanah (12%), wilayah rentan banjir (18%), dan kelerengan (5%). Visualisasi ini memberikan dasar spasial yang kuat dalam perencanaan lokasi TPS secara efektif, efisien, dan ramah lingkungan.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-ahp-ecoits" allowfullscreen></iframe>
+                    </div>
+                    <p class="caption-text">Peta Hasil Pembobotan AHP untuk Kesesuaian Lokasi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal-on-scroll" id="lokasi-rekomendasi-tps" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Rekomendasi Lokasi TPS</h2>
+            </div>
+            <div class="flex-container">
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="text-content">
+                        <h3>Peta Rekomendasi Penempatan TPS</h3>
+                        <p>Berdasarkan hasil analisis AHP yang mengintegrasikan berbagai faktor seperti kelerengan, LOS displacement (stabilitas lahan), kerentanan banjir, dan tutupan lahan, peta ini menyajikan rekomendasi lokasi-lokasi strategis untuk penempatan Tempat Pengolahan Sampah (TPS) baru di Kelurahan Tambak Wedi. Lokasi yang direkomendasikan (ditandai dengan simbol khusus) dipilih karena memenuhi kriteria kesesuaian tertinggi, memastikan operasional TPS yang efektif, minim risiko lingkungan, dan mudah dijangkau oleh masyarakat serta armada pengangkut sampah. Rekomendasi ini bertujuan untuk meningkatkan cakupan layanan pengelolaan sampah dan mengurangi dampak negatif dari pembuangan sampah liar.</p>
+                    </div>
+                </div>
+                <div class="flex-item flex-item-50 reveal-on-scroll">
+                    <div class="gee-app-container"> 
+                        <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-rekomendasi-tps-ecoits" allowfullscreen></iframe>
+                    </div>
+                    <p class="caption-text">Peta Interaktif Rekomendasi Lokasi TPS Baru.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION PREDIKSI GENANGAN - NOW INCLUDES SOLUSI & REKOMENDASI -->
+    <section class="section reveal-on-scroll" id="prediksi-genangan">
+        <div class="container">
+            <div class="section-title">
+                <h2>Prediksi Genangan & Solusi Rekomendasi</h2>
+            </div>
+            <div class="text-content reveal-on-scroll" style="margin-bottom: 2rem; max-width:900px; margin-left:auto; margin-right:auto;">
+                 <h3>Antisipasi Dampak Perubahan Iklim</h3>
+                <p>Peta prediksi genangan ini mengilustrasikan potensi dampak kenaikan muka air laut (Sea Level Rise - SLR) di Kelurahan Tambak Wedi hingga tahun 2080. Menggunakan model elevasi digital dan skenario SLR berdasarkan proyeksi IPCC, area yang berpotensi tergenang (ditunjukkan dengan warna biru) secara signifikan meluas, terutama di kawasan pesisir utara dan sekitar muara sungai. Pemukiman padat di bagian selatan dan infrastruktur vital juga terancam. Visualisasi ini menegaskan urgensi adaptasi perubahan iklim, termasuk penguatan infrastruktur pesisir, relokasi strategis, dan perbaikan sistem drainase, untuk meningkatkan resiliensi Tambak Wedi terhadap ancaman banjir rob di masa depan.</p>
+            </div>
+            <div class="gee-app-container reveal-on-scroll" style="height: 600px; margin-bottom:1rem;">
+                <iframe src="https://ee-adityarakanugraha11.projects.earthengine.app/view/peta-genangan-kenaikan-air-laut" allowfullscreen></iframe>
+            </div>
+            <p class="caption-text" style="font-size: 1.1rem; font-weight: 500; margin-bottom: 4rem;">Prediksi Genangan Akibat Kenaikan Muka Air Laut Sampai Tahun 2080</p>
+
+            <!-- MOVED CONTENT: Solusi dan Rekomendasi -->
+            <div class="sub-section-divider reveal-on-scroll"> <!-- Optional: for visual separation -->
+                <div class="section-title" style="margin-top: 2rem;"> <!-- Reuse section title style if desired -->
+                     <h2>Solusi dan Rekomendasi</h2>
+                 </div>
+                 <p class="section-subtitle reveal-on-scroll">Strategi dan Langkah Konkret untuk Pengelolaan Sampah dan Resiliensi Iklim yang Lebih Baik.</p>
+            
+                <div class="solusi-panels-container">
+                    <!-- Panel 1 -->
+                    <div class="solusi-panel reveal-on-scroll">
+                        <div class="solusi-panel-header">
+                            <h3 class="solusi-panel-title">Pengembangan Sistem Optimalisasi Penempatan TPS Berbasis GPS dan Analisis Kesesuaian Lahan</h3>
+                            <img src="Panel1.png" alt="Ilustrasi Panel 1" class="solusi-panel-image">
+                        </div>
+                        <div class="solusi-panel-content-hidden">
+                            <p>Sistem optimalisasi penempatan TPS guna meningkatkan kualitas lingkungan, mengurangi risiko bencana, dan mendukung sistem pengelolaan sampah yang adaptif menggunakan analisis metode AHP (Analytic Hierarchy Process). Implementasi ini akan melibatkan pemetaan partisipatif dengan teknologi GPS untuk akurasi data lokasi, serta analisis kesesuaian lahan yang mempertimbangkan faktor kelerengan, jenis tanah, jarak dari pemukiman dan badan air, aksesibilitas, serta potensi dampak lingkungan. Hasilnya adalah peta rekomendasi lokasi TPS yang strategis dan berkelanjutan.</p>
+                             <p><i>(Output visual berupa peta hasil AHP akan ditampilkan di sini atau sebagai bagian dari sistem WebGIS)</i></p>
+                        </div>
+                        <button class="solusi-selengkapnya-btn" aria-expanded="false">Selengkapnya <i class="fas fa-chevron-down"></i></button>
+                    </div>
+
+                    <!-- Panel 2 -->
+                    <div class="solusi-panel reveal-on-scroll">
+                        <div class="solusi-panel-header">
+                            <h3 class="solusi-panel-title">Integrasi Peta Prediksi ke dalam WebGIS Interaktif untuk Mitigasi Banjir Limpasan dan Pengelolaan Sampah</h3>
+                             <img src="Panel2.png" alt="Ilustrasi Panel 2" class="solusi-panel-image">
+                        </div>
+                        <div class="solusi-panel-content-hidden">
+                            <p>Pemerintah kelurahan dapat memanfaatkan WebGIS ini sebagai alat utama dalam perencanaan tata ruang adaptif dan edukasi masyarakat, dengan melibatkan warga dalam pelatihan penggunaan sistem untuk meningkatkan kesiapsiagaan dan partisipasi dalam pengurangan risiko bencana. Selain itu, WebGIS juga dapat menjadi platform untuk visualisasi data sampah, rute pengangkutan sampah yang optimal, dan sebagai bahan mitigasi seperti perencanaan pembangunan tanggul, penanaman mangrove, dan relokasi TPS yang lebih efektif berdasarkan data spasial yang akurat.</p>
+                        </div>
+                        <button class="solusi-selengkapnya-btn" aria-expanded="false">Selengkapnya <i class="fas fa-chevron-down"></i></button>
+                    </div>
+
+                    <!-- Panel 3 -->
+                    <div class="solusi-panel reveal-on-scroll">
+                        <div class="solusi-panel-header">
+                            <h3 class="solusi-panel-title">Rekomendasi Pengembangan Permukiman Pesisir Berketahanan Iklim dan Edukasi Masyarakat Sesuai dengan Poin SDGs 13</h3>
+                            <img src="Panel3.png" alt="Ilustrasi Panel 3" class="solusi-panel-image">
+                        </div>
+                        <div class="solusi-panel-content-hidden">
+                            <p>Sebagai rekomendasi bagi pemerintah, pengembangan permukiman pesisir berketahanan iklim di Tambak Wedi dapat dilakukan melalui relokasi bertahap ke wilayah aman bagi masyarakat yang tinggal di zona risiko sangat tinggi, pembangunan permukiman vertikal adaptif untuk efisiensi lahan, serta peningkatan infrastruktur seperti tanggul laut, sistem drainase terpadu, dan TPS dengan desain elevated (ditinggikan) untuk menghindari genangan. Infrastruktur hijau seperti sabuk mangrove juga penting untuk menahan abrasi dan limpasan.</p>
+                            <p>Untuk edukasi masyarakat, WebGIS dapat dimanfaatkan sebagai media visual dalam sosialisasi di sekolah dan komunitas. Program Kampung Iklim Adaptif (Proklim) perlu didorong lebih masif, serta pelibatan warga dalam pelaporan kondisi lingkungan (misalnya melalui aplikasi mobile) untuk mendukung peningkatan kapasitas adaptasi masyarakat sesuai target SDGs 13.1.2 (Meningkatkan pendidikan, penyadartahuan, dan kapasitas manusia serta institusi mengenai mitigasi, adaptasi, pengurangan dampak dan peringatan dini perubahan iklim).</p>
+                        </div>
+                        <button class="solusi-selengkapnya-btn" aria-expanded="false">Selengkapnya <i class="fas fa-chevron-down"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- END MOVED CONTENT: Solusi dan Rekomendasi -->
+        </div>
+    </section>
+    <!-- END SECTION PREDIKSI GENANGAN -->
+
+
+    <section class="section reveal-on-scroll" id="team" style="background-color: var(--white);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tim di Balik ECOITS</h2>
+            </div>
+            <div class="team-section-layout">
+                <div class="team-intro flex-item-40 reveal-on-scroll">
+                    <h3 style="font-size: 1.5rem; color: var(--dark); margin-bottom:1rem;">People Behind ECOITS</h3>
+                    <div class="text-content">
+                         <p>Tim ECOITS terdiri dari enam anggota dengan peran saling melengkapi. Aditya Raka Nugraha sebagai Data Analyst mengolah data spasial dan lingkungan. Vera Mei Suhardini dan Thufail Amru Ad'Dausi bertindak sebagai Project Officer dan Wakilnya, mengoordinasikan jalannya proyek. Zahra Nanda Emiliandini A. menjamin keselamatan tim sebagai petugas K3, sementara Clara Sapaduma Meivanda menyajikan visualisasi data sebagai Editor dan Designer. Racka Ichwan Zamora berperan sebagai Surveyor yang memimpin kegiatan lapangan. Dengan semangat kolaborasi dan slogan “One Action, One Map, for Many Solutions,” tim ECOITS membuktikan bahwa tindakan strategis berbasis pemetaan dapat menghadirkan solusi berkelanjutan bagi masyarakat.</p>
+                    </div>
+                </div>
+                <div class="team-members-container flex-item-60 reveal-on-scroll">
+                    <div class="team-grid">
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Aditya.png" alt="Aditya Raka Nugraha">
+                            <h4>Aditya Raka Nugraha</h4>
+                            <p>Data Analyst</p>
+                        </div>
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Vera.png" alt="Vera Mei Suhardini">
+                            <h4>Vera Mei Suhardini</h4>
+                            <p>Project Officer</p>
+                        </div>
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Thufail.png" alt="Thufail Amru Ad Dausi">
+                            <h4>Thufail Amru Ad'Dausi</h4>
+                            <p>Vice Project Officer</p>
+                        </div>
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Nanda.png" alt="Zahra Nanda Emiliandini A">
+                            <h4>Zahra Nanda Emiliandini A.</h4>
+                            <p>P3K</p>
+                        </div>
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Vanda.png" alt="Clara Sapaduma Meivanda">
+                            <h4>Clara Sapaduma Meivanda</h4>
+                            <p>Editor and Designer</p>
+                        </div>
+                        <div class="team-member reveal-on-scroll">
+                            <img src="Eco_Racka.png" alt="Racka Ichwan Zamora">
+                            <h4>Racka Ichwan Zamora</h4>
+                            <p>Surveyor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column logo-col reveal-on-scroll">
+                    <a href="#home"><img src="SOPLOGOKEMKER.png" alt="Logo Kemitraan" class="footer-logo"></a>
+                    <h4 class="footer-logo-text" style="color:var(--white);">ECOITS Initiative</h4>
+                    <p class="footer-description" style="font-size:0.85rem; line-height:1.5;">Program optimalisasi pengelolaan sampah dan peningkatan resiliensi iklim di Kelurahan Tambak Wedi melalui pendekatan geodetik untuk pemukiman berkelanjutan.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/ecoit5" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="TikTok (Coming Soon)"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" target="_blank" aria-label="Twitter (Coming Soon)"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column program-col reveal-on-scroll">
+                    <h3>Sinergi Program</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a>Kementerian Desa PDTT</a></li>
+                        <li class="footer-link"><a>Pemprov Jatim</a></li>
+                        <li class="footer-link"><a>Pemkot Surabaya</a></li>
+                        <li class="footer-link"><a>BPS Kota Surabaya</a></li>
+                        <li class="footer-link"><a href="https://www.its.ac.id/" target="_blank">ITS Surabaya</a></li>
+                        <li class="footer-link"><a href="https://surabaya.telkomuniversity.ac.id/" target="_blank">Telkom University Surabaya</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column contact-col reveal-on-scroll">
+                    <h3>Info Kontak</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><i class="fas fa-map-marker-alt"></i>Gedung Teknik Geomatika, Kampus ITS, Keputih, Sukolilo, Surabaya 60111, Jawa Timur</li>
+                        <li class="footer-link"><i class="fas fa-phone"></i><a href="tel:031-5929486">031-5929486</a></li>
+                        <li class="footer-link"><i class="fas fa-fax"></i>031-5929487</li>
+                        <li class="footer-link"><i class="fas fa-envelope"></i><a href="mailto:geomatika@its.ac.id">geomatika@its.ac.id</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                Copyright © <span id="currentYear"></span> ECOITS Team - Teknik Geomatika ITS. All Rights Reserved. <br>
+                Inspired by <a href="https://pemerintahan.surabaya.go.id/kelurahan_tambak_wedi" target="_blank" style="color:var(--accent); text-decoration:underline;">Website Kelurahan Tambak Wedi</a>
+                & <a href="https://surabaya.telkomuniversity.ac.id/" target="_blank" style="color:var(--accent); text-decoration:underline;">Telkom University Surabaya</a>.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variabel global untuk elemen-elemen yang sering diakses
+        let sections = null;
+        let allNavLinks = null; 
+        let ahpParentNavLink = null;
+        let mobileNavToggleEl = null;
+        let mainNavLinksEl = null;
+        let dropdownsQuery = null;
+
+
+        async function loadExcelData(filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`Gagal memuat file Excel: ${response.statusText}`);
+                }
+                const arrayBuffer = await response.arrayBuffer();
+                const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                return jsonData;
+            } catch (error) {
+                console.error("Error loading Excel data:", error);
+                throw error; 
+            }
+        }
+
+        async function initializeSampahChart() {
+            const ctx = document.getElementById('sampahChart');
+            if (!ctx) {
+                console.error("Elemen canvas 'sampahChart' tidak ditemukan.");
+                return;
+            }
+
+            try {
+                const excelData = await loadExcelData('Produksi_Sampah_TPS_3R.xlsx'); 
+                
+                if (!excelData || excelData.length === 0) {
+                    ctx.getContext('2d').fillText("Tidak ada data yang dapat ditampilkan dari file Excel.", 10, 50);
+                    console.warn("File Excel kosong atau format tidak sesuai.");
+                    return;
+                }
+
+                const displayData = excelData.slice(0, 10);
+
+                const tpsLabels = displayData.map(row => row['Nama TPS'] || 'Nama Tidak Ada');
+                const sampahMasukValues = displayData.map(row => parseFloat(row['Sampah Masuk (ton/thn)']) || 0);
+                const sampahTerkelolaValues = displayData.map(row => parseFloat(row['Sampah Terkelola (ton/thn)']) || 0);
+
+                const defaultMasukBgColor = 'rgba(255, 159, 64, 0.7)'; 
+                const defaultMasukBorderColor = 'rgba(255, 159, 64, 1)';
+                const defaultTerkelolaBgColor = 'rgba(75, 192, 192, 0.7)';
+                const defaultTerkelolaBorderColor = 'rgba(75, 192, 192, 1)';
+
+                const tambakWediMasukBgColor = 'rgba(255, 99, 132, 0.7)'; 
+                const tambakWediMasukBorderColor = 'rgba(255, 99, 132, 1)';
+                const tambakWediTerkelolaBgColor = 'rgba(54, 162, 235, 0.7)';
+                const tambakWediTerkelolaBorderColor = 'rgba(54, 162, 235, 1)';
+                
+                const targetTPSName = "TPS 3R Tambak Wedi"; 
+
+                const sampahMasukBgColors = tpsLabels.map(label => 
+                    label === targetTPSName ? tambakWediMasukBgColor : defaultMasukBgColor
+                );
+                const sampahMasukBorderColors = tpsLabels.map(label => 
+                    label === targetTPSName ? tambakWediMasukBorderColor : defaultMasukBorderColor
+                );
+                const sampahTerkelolaBgColors = tpsLabels.map(label => 
+                    label === targetTPSName ? tambakWediTerkelolaBgColor : defaultTerkelolaBgColor
+                );
+                const sampahTerkelolaBorderColors = tpsLabels.map(label => 
+                    label === targetTPSName ? tambakWediTerkelolaBorderColor : defaultTerkelolaBorderColor
+                );
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: tpsLabels,
+                        datasets: [{
+                            label: 'Sampah Masuk (ton/thn)',
+                            data: sampahMasukValues,
+                            backgroundColor: sampahMasukBgColors,
+                            borderColor: sampahMasukBorderColors,
+                            borderWidth: 1
+                        }, {
+                            label: 'Sampah Terkelola (ton/thn)',
+                            data: sampahTerkelolaValues,
+                            backgroundColor: sampahTerkelolaBgColors,
+                            borderColor: sampahTerkelolaBorderColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Sampah (ton/thn)',
+                                    font: { size: 14 }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Fasilitas Pengelolaan Sampah',
+                                    font: { size: 14 }
+                                },
+                                ticks: {
+                                    maxRotation: 45, 
+                                    minRotation: 0
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y.toLocaleString() + ' ton/thn';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Gagal menginisialisasi chart sampah:", error);
+                const context = ctx.getContext('2d');
+                context.font = "16px Poppins";
+                context.fillStyle = "red";
+                context.fillText("Gagal memuat data untuk grafik. " + error.message, 10, 50);
+                 if (error.message.includes('fetch') && window.location.protocol === 'file:') {
+                     context.fillText("Pastikan halaman ini dijalankan melalui server web, bukan dibuka sebagai file lokal.", 10, 80);
+                 }
+            }
+        }
+        
+        function navHighlighter() {
+            if (!sections || !allNavLinks) return; 
+
+            let scrollY = window.pageYOffset;
+            let currentActiveSectionId = null; 
+            const navContainerHeight = document.querySelector('.nav-container')?.offsetHeight || 70;
+            const offset = navContainerHeight + 50; 
+
+            sections.forEach(current => {
+                const sectionTop = current.offsetTop - offset;
+                const sectionBottom = sectionTop + current.offsetHeight;
+
+                if (scrollY >= sectionTop && scrollY < sectionBottom) {
+                    currentActiveSectionId = current.getAttribute("id");
+                }
+            });
+
+            allNavLinks.forEach(link => {
+                link.classList.remove("active");
+            });
+            if(ahpParentNavLink) ahpParentNavLink.classList.remove("active");
+
+            if (currentActiveSectionId) {
+                let isAhpSubSectionActive = false;
+                allNavLinks.forEach(link => {
+                    if (link.getAttribute("href") === `#${currentActiveSectionId}`) {
+                        link.classList.add("active");
+                        
+                        const parentDropdown = link.closest('.dropdown');
+                        if (parentDropdown && ahpParentNavLink && parentDropdown.contains(ahpParentNavLink) && link.closest('.dropdown-content')) {
+                            isAhpSubSectionActive = true;
+                        }
+                    }
+                });
+
+                if (isAhpSubSectionActive && ahpParentNavLink) {
+                    ahpParentNavLink.classList.add("active");
+                } else if (currentActiveSectionId === "metode-ahp" && ahpParentNavLink) {
+                    ahpParentNavLink.classList.add("active");
+                }
+            }
+        }
+
+        function setupSolusiPanels() {
+            const selengkapnyaButtons = document.querySelectorAll('.solusi-selengkapnya-btn');
+            selengkapnyaButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const panel = button.closest('.solusi-panel');
+                    const content = panel.querySelector('.solusi-panel-content-hidden');
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    button.classList.toggle('expanded', !isExpanded);
+                    content.classList.toggle('expanded', !isExpanded);
+
+                    if (!isExpanded) {
+                        button.innerHTML = 'Ringkas <i class="fas fa-chevron-up"></i>';
+                        content.style.maxHeight = content.scrollHeight + "px"; 
+                    } else {
+                        button.innerHTML = 'Selengkapnya <i class="fas fa-chevron-down"></i>';
+                        content.style.maxHeight = null; 
+                    }
+                });
+                const isInitiallyExpanded = button.classList.contains('expanded');
+                if(isInitiallyExpanded) {
+                    button.innerHTML = 'Ringkas <i class="fas fa-chevron-up"></i>';
+                } else {
+                    button.innerHTML = 'Selengkapnya <i class="fas fa-chevron-down"></i>';
+                }
+
+            });
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            sections = document.querySelectorAll("section[id]");
+            allNavLinks = document.querySelectorAll('#mainNavLinks a.nav-link, #mainNavLinks .dropdown-content a, a.nav-logo');
+            ahpParentNavLink = document.querySelector('#mainNavLinks a.nav-link[href="#metode-ahp"]');
+            mobileNavToggleEl = document.querySelector('.mobile-nav-toggle');
+            mainNavLinksEl = document.getElementById('mainNavLinks'); 
+            dropdownsQuery = document.querySelectorAll('#mainNavLinks .dropdown');
+
+            initializeSampahChart();
+            navHighlighter(); 
+            setupSolusiPanels(); 
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            window.addEventListener("scroll", navHighlighter);
+
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            const revealObserverOptions = { root: null, threshold: 0.1 }; // Ensure this is not too low for sub-sections
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, revealObserverOptions);
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            if (mobileNavToggleEl) {
+                mobileNavToggleEl.addEventListener('click', () => {
+                    const isActive = mainNavLinksEl.classList.toggle('active');
+                    mobileNavToggleEl.querySelector('i').classList.toggle('fa-bars', !isActive);
+                    mobileNavToggleEl.querySelector('i').classList.toggle('fa-times', isActive);
+                    mobileNavToggleEl.setAttribute('aria-expanded', isActive.toString());
+                });
+            }
+
+            document.querySelectorAll('#mainNavLinks a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.closest('.mobile-social-icons')) return;
+                    
+                    const isDropdownParentLink = this.classList.contains('nav-link') && this.parentElement.classList.contains('dropdown');
+                    if (window.innerWidth <= 992) { // Mobile/Tablet view
+                        if (isDropdownParentLink) {
+                            e.preventDefault();
+                            const parentDropdown = this.parentElement;
+                            const subMenu = parentDropdown.querySelector('.dropdown-content');
+                            const isOpening = !parentDropdown.classList.contains('active');
+                            
+                            dropdownsQuery.forEach(otherDropdown => {
+                                if (otherDropdown !== parentDropdown && otherDropdown.classList.contains('active')) {
+                                    otherDropdown.classList.remove('active');
+                                    const otherSubMenu = otherDropdown.querySelector('.dropdown-content');
+                                    if (otherSubMenu) otherSubMenu.style.display = 'none';
+                                    otherDropdown.querySelector('a.nav-link').setAttribute('aria-expanded', 'false');
+                                }
+                            });
+                            parentDropdown.classList.toggle('active');
+                            this.setAttribute('aria-expanded', isOpening.toString());
+                            if (subMenu) subMenu.style.display = isOpening ? 'block' : 'none';
+                        } else { // Is a normal link or a dropdown item link
+                            // Close nav if open
+                            if (mainNavLinksEl.classList.contains('active') && mobileNavToggleEl) {
+                                mainNavLinksEl.classList.remove('active');
+                                mobileNavToggleEl.querySelector('i').classList.add('fa-bars');
+                                mobileNavToggleEl.querySelector('i').classList.remove('fa-times');
+                                mobileNavToggleEl.setAttribute('aria-expanded', 'false');
+                                // Close all dropdowns too
+                                dropdownsQuery.forEach(dd => {
+                                    dd.classList.remove('active');
+                                    const sm = dd.querySelector('.dropdown-content');
+                                    if (sm) sm.style.display = 'none';
+                                    dd.querySelector('a.nav-link').setAttribute('aria-expanded', 'false');
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Close mobile nav on click outside
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 992 && mainNavLinksEl && mobileNavToggleEl) {
+                    if (mainNavLinksEl.classList.contains('active') && 
+                        !mobileNavToggleEl.contains(event.target) && 
+                        !mainNavLinksEl.contains(event.target)) {
+                            
+                        mainNavLinksEl.classList.remove('active');
+                        mobileNavToggleEl.querySelector('i').classList.add('fa-bars');
+                        mobileNavToggleEl.querySelector('i').classList.remove('fa-times');
+                        mobileNavToggleEl.setAttribute('aria-expanded', 'false');
+                        dropdownsQuery.forEach(dd => {
+                            dd.classList.remove('active');
+                            const sm = dd.querySelector('.dropdown-content');
+                            if (sm) sm.style.display = 'none';
+                           dd.querySelector('a.nav-link').setAttribute('aria-expanded', 'false');
+                        });
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
